@@ -12,6 +12,6 @@
 - This project was created to practice REST API and WebClient.
 - This service runs on port 8081.
 
-- Second part: [My Little Warehouse repository](https://github.com/...)
+- Second part: [My Little Warehouse repository](https://github.com/jswiet/Microservices-My-Little-Warehouse.git.)
 
 _Work in progress, with more features planned for future updates._
