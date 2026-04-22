@@ -7,6 +7,8 @@ public record UserDTO(
         String firstName,
         String lastName,
         String email,
-        Address address
+        Address address,
+        Boolean enabled,
+        Boolean locked
 ) {
 }
