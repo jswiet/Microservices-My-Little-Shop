@@ -19,8 +19,11 @@ public record NewUserRequestDTO(
         Address address,
         
         @NotBlank
-        String password
+        String password,
         
+        Boolean enabled,
         
+        Boolean locked
+
 ) {
 }
