@@ -1,11 +1,10 @@
 package com.project.mylittleshop.controller;
 
 import com.project.mylittleshop.DTO.AddressDTO;
-import com.project.mylittleshop.DTO.NewUserRequestDTO;
 import com.project.mylittleshop.DTO.PasswordDTO;
 import com.project.mylittleshop.DTO.UserDTO;
 import com.project.mylittleshop.service.UserService;
-import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,22 +19,20 @@ public class UserController {
         this.userService = userService;
     }
     
-    @PostMapping("register")
-    public UserDTO registerUser(@Valid @RequestBody NewUserRequestDTO newUserRequestDTO) {
-        return userService.registerUser(newUserRequestDTO);
-    }
-    
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<UserDTO> getAllUsers() {
         return userService.getAllUsers();
     }
     
     @GetMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public UserDTO getUserById(@PathVariable("id") Long userId) {
         return userService.getUserById(userId);
     }
     
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUserById(@PathVariable("id") Long userId) {
         userService.deleteUserById(userId);
     }
