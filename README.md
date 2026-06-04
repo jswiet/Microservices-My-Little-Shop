@@ -7,6 +7,7 @@
     - Spring Web MVC
     - Spring WebFlux (WebClient)
     - Spring Data JPA (JPA Auditing and custom JPQL queries)
+    - Spring Security
     - PostgreSQL (Docker container)
     - MongoDB (Docker container)
 - This project was created to practice REST API and WebClient.
