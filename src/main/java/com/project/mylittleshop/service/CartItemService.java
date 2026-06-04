@@ -50,7 +50,8 @@ public class CartItemService {
     public CartItemDTO getCartsByUserId(Long userId) {
         return cartItemRepository.findCartItemByUserId(userId)
                                  .map(cartItemDTOMapper)
-                                 .orElseThrow(() -> new ResourceNotFound("USer with id: " + userId + " not found"));
+                                 .orElseThrow(() -> new ResourceNotFound("Cart for user with id: " + userId + " not " +
+                                         "found"));
     }
     
     public String createNewCartForUser(Long userId) {
