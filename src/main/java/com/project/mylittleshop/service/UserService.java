@@ -16,6 +16,7 @@ import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,12 +30,14 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserDTOMapper userDTOMapper;
     private final ConfirmationTokenService confirmationTokenService;
+    private final BCryptPasswordEncoder passwordEncoder;
     
-    public UserService(UserRepository userRepository, UserDTOMapper userDTOMapper, ConfirmationTokenService confirmationTokenService) {
+    public UserService(UserRepository userRepository, UserDTOMapper userDTOMapper, ConfirmationTokenService confirmationTokenService, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userDTOMapper = userDTOMapper;
         
         this.confirmationTokenService = confirmationTokenService;
+        this.passwordEncoder = passwordEncoder;
     }
     
     public UserDTO getUserById(Long id) {
@@ -92,11 +95,11 @@ public class UserService implements UserDetailsService {
     public int changePassword(Long userId, PasswordDTO passwordDTO) {
         User user = userRepository.findById(userId)
                                   .orElseThrow(() -> new ResourceNotFound("User not found"));
-        if (!passwordDTO.oldPassword().equals(user.getPasswordHashed())) {
+        if (!passwordEncoder.matches(passwordDTO.oldPassword(), user.getPasswordHashed())) {
             throw new IllegalArgumentException("Old password is wrong");
         }
-        String newPassword = passwordDTO.newPassword();
-        return userRepository.changePassword(userId, newPassword);
+        String newPasswordHashed = passwordEncoder.encode(passwordDTO.newPassword());
+        return userRepository.changePassword(userId, newPasswordHashed);
     }
     @Override
     public @NonNull UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException {
