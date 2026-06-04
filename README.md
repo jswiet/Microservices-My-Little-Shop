@@ -7,12 +7,20 @@
     - Spring Web MVC
     - Spring WebFlux (WebClient)
     - Spring Data JPA (JPA Auditing and custom JPQL queries)
-    - Spring Security
+    - Spring Security, JWT
     - PostgreSQL (Docker container)
     - MongoDB (Docker container)
 - This project was created to practice REST API and WebClient.
 - This service runs on port 8081.
 
-- Second part: [My Little Warehouse repository](https://github.com/jswiet/Microservices-My-Little-Warehouse)
+--> __SQL (PostgreSQL)__ was used to stored user data and confirmation tokens (send via emails), to allow table joins, keep 
+sensitive data secure, and ensure atomicity.
 
-_Work in progress, with more features planned for future updates._
+--> __NoSQL (MongoDB)__ was used to store cart items, to enable flexible cart structure.
+
+--> Added stateless __JWT authentication__, the token must be passed manually in the Authorization header. 
+  The next step will be to store it in cookies.
+
+---
+- Second part: [My Little Warehouse repository](https://github.com/jswiet/Microservices-My-Little-Warehouse)
+---
