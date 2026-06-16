@@ -33,17 +33,15 @@ jobs:
           cache: 'maven'
 
       - name: Build and test with Maven
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5433/${{ secrets.POSTGRES_DB }}
+          SPRING_DATASOURCE_USERNAME: ${{ secrets.POSTGRES_USER }}
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          SPRING_DATA_MONGODB_URI: mongodb://${{ secrets.MONGO_USER }}:${{ secrets.MONGO_PASSWORD }}@localhost:27017/${{ secrets.MONGO_DB }}?authSource=admin
+          SPRING_MAIL_HOST: ${{ secrets.MAIL_HOST }}
+          SPRING_MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          SPRING_MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
         run: |
-          chmod +x mvnw
-          ./mvnw clean package -e \
-            -DPOSTGRES_PORT=5433 \
-            -DPOSTGRES_DB="${{ secrets.POSTGRES_DB }}" \
-            -DPOSTGRES_USER="${{ secrets.POSTGRES_USER }}" \
-            -DPOSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}" \
-            -DMONGO_PORT=27017 \
-            -DMONGO_USER="${{ secrets.MONGO_USER }}" \
-            -DMONGO_PASSWORD="${{ secrets.MONGO_PASSWORD }}" \
-            -DMAIL_HOST="${{ secrets.MAIL_HOST }}" \
-            -DMAIL_USERNAME="${{ secrets.MAIL_USERNAME }}" \
-            -DMAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}" \
-            -DJWT_SECRET_KEY="${{ secrets.JWT_SECRET_KEY }}"
+            chmod +x mvnw
+            ./mvnw clean package -e
