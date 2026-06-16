@@ -23,7 +23,12 @@ jobs:
 
       - name: Start Docker Containers
         run: |
-          docker compose up -d 
+          docker compose up -d
+          sleep 30
+          echo "=== CONTAINER STATUS ==="
+          docker compose ps
+          echo "=== POSTGRES LOGS ==="
+          docker compose logs postgres
 
 
       - name: Set up JDK 21
