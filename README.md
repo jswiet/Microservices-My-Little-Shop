@@ -13,6 +13,12 @@
 - This project was created to practice REST API and WebClient.
 - This service runs on port 8081.
 
+---
+
+--> Added __GitHub Actions (CI)__ pipeline that automatically builds the project and runs tests on every push to the master branch.
+
+--> Configured __Checkstyle__ integration with Maven to block builds containing (`// TODO`) comments.
+
 --> __SQL (PostgreSQL)__ was used to stored user data and confirmation tokens (send via emails), to allow table joins, keep 
 sensitive data secure, and ensure atomicity.
 
