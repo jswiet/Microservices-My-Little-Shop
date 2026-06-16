@@ -21,7 +21,9 @@ jobs:
           echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
 
       - name: Start Docker Containers
-        run: docker compose up -d
+        run: | 
+          docker compose up -d
+          sleep 12
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
