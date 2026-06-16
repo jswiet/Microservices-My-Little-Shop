@@ -29,6 +29,9 @@ jobs:
           docker compose ps
           echo "=== POSTGRES LOGS ==="
           docker compose logs postgres
+          echo "=== MONGODB LOGS ==="
+          docker compose logs mongodb
+          
 
 
       - name: Set up JDK 21
