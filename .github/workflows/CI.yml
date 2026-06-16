@@ -32,5 +32,10 @@ jobs:
 
       - name: Build and test with Maven
         run: |
-          chmod +x mvnw
-          ./mvnw clean package
+            chmod +x mvnw
+            ./mvnw clean package -e \
+              -Dspring.datasource.username="${{ secrets.POSTGRES_USER }}" \
+              -Dspring.datasource.password="${{ secrets.POSTGRES_PASSWORD }}" \
+              -Dspring.data.mongodb.username="${{ secrets.MONGO_USER }}" \
+              -Dspring.data.mongodb.password="${{ secrets.MONGO_PASSWORD }}" \
+              -Dspring.data.mongodb.database="${{ secrets.MONGO_DB }}"
