@@ -34,6 +34,7 @@ jobs:
         run: |
             chmod +x mvnw
             ./mvnw clean package -e \
+              -Dspring.datasource.url="jdbc:postgresql://localhost:5433/${{ secrets.POSTGRES_DB }}" \
               -Dspring.datasource.username="${{ secrets.POSTGRES_USER }}" \
               -Dspring.datasource.password="${{ secrets.POSTGRES_PASSWORD }}" \
               -Dspring.data.mongodb.username="${{ secrets.MONGO_USER }}" \
