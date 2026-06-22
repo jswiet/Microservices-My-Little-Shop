@@ -24,8 +24,8 @@ sensitive data secure, and ensure atomicity.
 
 --> __NoSQL (MongoDB)__ was used to store cart items, to enable flexible cart structure.
 
---> Added stateless __JWT authentication__, the token must be passed manually in the Authorization header. 
-  The next step will be to store it in cookies.
+--> Added stateless __JWT authentication__, ~~the token must be passed manually in the Authorization header. 
+  The next step will be to store it in cookies.~~ the token is stored in an `HttpOnly` cookie ✅
 
 ---
 - Second part: [My Little Warehouse repository](https://github.com/jswiet/Microservices-My-Little-Warehouse)

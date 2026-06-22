@@ -15,7 +15,7 @@ jobs:
           echo "MONGO_USER=${{ secrets.MONGO_USER }}" >> .env
           echo "MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}" >> .env
           echo "MONGO_DB=${{ secrets.MONGO_DB }}" >> .env
-          echo "MONGO_EXP_PASSWORD=admin" >> .env
+          echo "MONGO_EXP_PASSWORD=${{ secrets.MONGO_EXP_PASS }}" >> .env
           echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
           echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
           echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
@@ -37,7 +37,7 @@ jobs:
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5433/${{ secrets.POSTGRES_DB }}
           SPRING_DATASOURCE_USERNAME: ${{ secrets.POSTGRES_USER }}
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          SPRING_DATA_MONGODB_URI: "mongodb://${{ secrets.MONGO_USER }}:${{ secrets.MONGO_PASSWORD }}@mongo-db:27017/cart?authSource=admin"
+          SPRING_DATA_MONGODB_URI: "mongodb://${{ secrets.MONGO_USER }}:${{ secrets.MONGO_PASSWORD }}@mongodb:27017/cart?authSource=admin"
           SPRING_MAIL_HOST: ${{ secrets.MAIL_HOST }}
           SPRING_MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
           SPRING_MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}

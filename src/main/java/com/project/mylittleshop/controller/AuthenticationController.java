@@ -4,6 +4,10 @@ import com.project.mylittleshop.DTO.AuthenticationRequest;
 import com.project.mylittleshop.DTO.AuthenticationResponse;
 import com.project.mylittleshop.entity.User;
 import com.project.mylittleshop.security.JwtService;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,6 +26,9 @@ import java.util.Map;
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
     
+    @Value("${jwt.expiration}")
+    private long jwtExpiration;
+    
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     
@@ -34,7 +41,8 @@ public class AuthenticationController {
     
     @PostMapping("")
     public ResponseEntity<?> createAuthenticationToken(
-            @RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+            @RequestBody AuthenticationRequest authenticationRequest,
+            HttpServletResponse response) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     authenticationRequest.email(),
@@ -49,7 +57,32 @@ public class AuthenticationController {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("userId", userDetails.getId());
         final String jwt = jwtService.generateToken(extraClaims, userDetails);
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        ResponseCookie cookie = ResponseCookie.from("jwt", jwt)
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(jwtExpiration/1000)
+                .sameSite("Strict")
+                .build();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE,cookie.toString())
+                .body("Login successful");
+    }
+    
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        
+        ResponseCookie cookie = ResponseCookie.from("jwt", "")
+                                              .httpOnly(true)
+                                              .secure(false)
+                                              .path("/")
+                                              .maxAge(0)
+                                              .sameSite("Strict")
+                                              .build();
+        
+        return ResponseEntity.ok()
+                             .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                             .body("Logged out");
     }
     
 }
