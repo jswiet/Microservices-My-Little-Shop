@@ -17,6 +17,7 @@ public class SwaggerUIConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("Microservice: My little Shop API")
+                        .version("1.0.0")
                 )
                 .addSecurityItem(new SecurityRequirement().addList(cookieSchemeName))
                 .components(new Components()
