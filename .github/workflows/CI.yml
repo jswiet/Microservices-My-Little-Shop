@@ -48,7 +48,7 @@ jobs:
 
       - name: Verify OpenAPI Documentation
         run: |
-          if cmp -s docs/openapi.json target/openapi-temp/openapi.json; then
+          if diff -w docs/openapi.json target/openapi-temp/openapi.json > /dev/null; then
               echo "OpenAPI documentation is up to date."
           else
               echo "ERROR: OpenAPI documentation is outdated!"
