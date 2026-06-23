@@ -45,3 +45,12 @@ jobs:
         run: |
           chmod +x mvnw
           ./mvnw clean package -e
+
+      - name: Verify OpenAPI Documentation
+        run: |
+          if cmp -s docs/openapi.json target/openapi-temp/openapi.json; then
+              echo "OpenAPI documentation is up to date."
+          else
+              echo "ERROR: OpenAPI documentation is outdated!"
+              exit 1
+          fi
