@@ -46,7 +46,7 @@ jobs:
           chmod +x mvnw
           ./mvnw clean package -e
 
-      - name: Verify OpenAPI Documentation
-        shell: cmd
+      - name: Run OpenAPI Check Script
         run: |
-          shop-check.cmd
+          chmod +x openapi-check.sh
+          ./openapi-check.sh
