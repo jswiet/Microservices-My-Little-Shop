@@ -44,7 +44,7 @@ jobs:
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
         run: |
           chmod +x mvnw
-          ./mvnw clean package -e
+          ./mvnw clean package -e -Dserver.port=8081
 
       - name: Run OpenAPI Check Script
         run: |
