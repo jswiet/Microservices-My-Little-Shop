@@ -14,18 +14,23 @@
 - This service runs on port 8081.
 
 ---
+### 📖 API Documentation
 
---> Added __GitHub Actions (CI)__ pipeline that automatically builds the project and runs tests on every push to the master branch.
+You can find the API documentation here: 
+[**Swagger UI Documentation**](https://jswiet.github.io/Microservices-My-Little-Shop/)
 
---> Configured __Checkstyle__ integration with Maven to block builds containing (`// TODO`) comments.
+---
 
---> __SQL (PostgreSQL)__ was used to stored user data and confirmation tokens (send via emails), to allow table joins, keep 
+➤ Added __GitHub Actions (CI)__ pipeline that automatically builds the project and runs tests on every push to the master branch.
+
+➤ Configured __Checkstyle__ integration with Maven to block builds containing (`// TODO`) comments.
+
+➤ __SQL (PostgreSQL)__ was used to stored user data and confirmation tokens (send via emails), to allow table joins, keep 
 sensitive data secure, and ensure atomicity.
 
---> __NoSQL (MongoDB)__ was used to store cart items, to enable flexible cart structure.
+➤ __NoSQL (MongoDB)__ was used to store cart items, to enable flexible cart structure.
 
---> Added stateless __JWT authentication__, ~~the token must be passed manually in the Authorization header. 
-  The next step will be to store it in cookies.~~ the token is stored in an `HttpOnly` cookie ✅
+➤ Added stateless __JWT authentication__, the token is stored in an `HttpOnly` cookie.
 
 ---
 - Second part: [My Little Warehouse repository](https://github.com/jswiet/Microservices-My-Little-Warehouse)
