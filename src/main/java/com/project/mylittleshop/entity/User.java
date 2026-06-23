@@ -1,5 +1,6 @@
 package com.project.mylittleshop.entity;
 
+import com.project.mylittleshop.security.LoggedUser;
 import com.project.mylittleshop.userRole.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -22,7 +23,7 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "shopUser")
-public class User implements UserDetails {
+public class User implements UserDetails, LoggedUser {
     
     @Id
     @SequenceGenerator(
@@ -209,5 +210,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+    @Override
+    public Long getLoggedUserId() {
+        return this.id;
     }
 }
