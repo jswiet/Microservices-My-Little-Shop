@@ -2,11 +2,13 @@ package com.project.mylittleshop.controller;
 
 import com.project.mylittleshop.DTO.CartItemDTO;
 import com.project.mylittleshop.DTO.NewCartItemRequestDTO;
+import com.project.mylittleshop.security.LoggedUser;
 import com.project.mylittleshop.service.CartItemService;
 import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,9 +22,10 @@ public class CartItemController {
         this.cartItemService = cartItemService;
     }
     
-    @PostMapping("user/{userId}")
-    public String createNewCart(@PathVariable("userId") Long userId) {
-        return cartItemService.createNewCartForUser(userId);
+    @PostMapping("users/current")
+    @PreAuthorize("isAuthenticated()")
+    public String createNewCart(@AuthenticationPrincipal LoggedUser loggedUser) {
+        return cartItemService.createNewCartForUser(loggedUser.getLoggedUserId());
     }
     
     @GetMapping
@@ -32,17 +35,20 @@ public class CartItemController {
     }
     
     @GetMapping("{id}")
+    @PreAuthorize("isAuthenticated()")
     public CartItemDTO getCartById(@PathVariable("id") String cartId) {
         return cartItemService.getCartById(cartId);
     }
     
-    @GetMapping("user/{id}")
-    public CartItemDTO getCartsByUserId(@PathVariable("id") Long userId) {
-        return cartItemService.getCartsByUserId(userId);
+    @GetMapping("users/current")
+    @PreAuthorize("isAuthenticated()")
+    public CartItemDTO getCartsByUserId(@AuthenticationPrincipal LoggedUser loggedUser) {
+        return cartItemService.getCartsByUserId(loggedUser.getLoggedUserId());
     }
     
     @PostMapping("{cartId}")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("isAuthenticated()")
     public CartItemDTO addNewProduct(@PathVariable("cartId") String cartId,
                                      @RequestBody @Valid
                                      NewCartItemRequestDTO newCartItemRequestDTO) throws BadRequestException {
@@ -50,6 +56,7 @@ public class CartItemController {
     }
     
     @PatchMapping("cartCheckout/{cartId}")
+    @PreAuthorize("isAuthenticated()")
     public void checkoutCart(@PathVariable("cartId") String cartId) {
         cartItemService.checkoutCart(cartId);
     }
