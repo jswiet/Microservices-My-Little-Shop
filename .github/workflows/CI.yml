@@ -47,10 +47,6 @@ jobs:
           ./mvnw clean package -e
 
       - name: Verify OpenAPI Documentation
+        shell: cmd
         run: |
-          if diff -w docs/openapi.json target/openapi-temp/openapi.json > /dev/null; then
-              echo "OpenAPI documentation is up to date."
-          else
-              echo "ERROR: OpenAPI documentation is outdated!"
-              exit 1
-          fi
+          shop-check.cmd
