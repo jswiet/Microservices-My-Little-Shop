@@ -3,8 +3,12 @@ package com.project.mylittleshop.controller;
 import com.project.mylittleshop.DTO.AddressDTO;
 import com.project.mylittleshop.DTO.PasswordDTO;
 import com.project.mylittleshop.DTO.UserDTO;
+import com.project.mylittleshop.entity.User;
+import com.project.mylittleshop.security.LoggedUser;
 import com.project.mylittleshop.service.UserService;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,14 +41,17 @@ public class UserController {
         userService.deleteUserById(userId);
     }
     
-    @PatchMapping("{id}/address")
-    public int updateUserAddress(@PathVariable("id") Long userId, @RequestBody AddressDTO addressDTO) {
-        return userService.updateUserAddress(userId, addressDTO);
+    @PatchMapping("current/address")
+    @PreAuthorize("isAuthenticated()")
+    public int updateUserAddress(@RequestBody AddressDTO addressDTO,
+                                 @AuthenticationPrincipal LoggedUser loggedUser) {
+        return userService.updateUserAddress(loggedUser.getLoggedUserId(), addressDTO);
     }
     
-    @PatchMapping("{id}/changePassword")
-    public int changePassword(@PathVariable("id") Long userId, @RequestBody PasswordDTO passwordDTO) {
-        return userService.changePassword(userId, passwordDTO);
+    @PatchMapping("current/changePassword")
+    @PreAuthorize("isAuthenticated()")
+    public int changePassword(@RequestBody PasswordDTO passwordDTO, @AuthenticationPrincipal LoggedUser loggedUser) {
+        return userService.changePassword(loggedUser.getLoggedUserId(), passwordDTO);
     }
     
 }
