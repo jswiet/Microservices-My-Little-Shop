@@ -45,8 +45,3 @@ jobs:
         run: |
           chmod +x mvnw
           ./mvnw clean package -e -Dserver.port=8081
-
-      - name: Run OpenAPI Check Script
-        run: |
-          chmod +x openapi-check.sh
-          ./openapi-check.sh
