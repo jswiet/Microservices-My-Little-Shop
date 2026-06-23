@@ -1,10 +1,8 @@
 package com.project.mylittleshop.controller;
 
 import com.project.mylittleshop.DTO.AuthenticationRequest;
-import com.project.mylittleshop.DTO.AuthenticationResponse;
 import com.project.mylittleshop.entity.User;
 import com.project.mylittleshop.security.JwtService;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -12,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,13 +23,11 @@ import java.util.Map;
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
     
-    @Value("${jwt.expiration}")
-    private long jwtExpiration;
-    
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    
     private final UserDetailsService userDetailsService;
+    @Value("${jwt.expiration}")
+    private long jwtExpiration;
     public AuthenticationController(AuthenticationManager authenticationManager, JwtService jwtService, UserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
@@ -41,8 +36,7 @@ public class AuthenticationController {
     
     @PostMapping("")
     public ResponseEntity<?> createAuthenticationToken(
-            @RequestBody AuthenticationRequest authenticationRequest,
-            HttpServletResponse response) throws Exception {
+            @RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     authenticationRequest.email(),
@@ -58,15 +52,15 @@ public class AuthenticationController {
         extraClaims.put("userId", userDetails.getId());
         final String jwt = jwtService.generateToken(extraClaims, userDetails);
         ResponseCookie cookie = ResponseCookie.from("jwt", jwt)
-                .httpOnly(true)
-                .secure(false)
-                .path("/")
-                .maxAge(jwtExpiration/1000)
-                .sameSite("Strict")
-                .build();
+                                              .httpOnly(true)
+                                              .secure(false)
+                                              .path("/")
+                                              .maxAge(jwtExpiration / 1000)
+                                              .sameSite("Strict")
+                                              .build();
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE,cookie.toString())
-                .body("Login successful");
+                             .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                             .body("Login successful");
     }
     
     @PostMapping("/logout")
